@@ -1,8 +1,8 @@
 ﻿   Qt/MSBuild: 3.3.0.13
-  Reading Qt configuration (C:/Qt/6.8.1/msvc2022_64/bin/qmake)
    Qt: 6.8.1
-  Tile.cpp
+  moc Battleship.h
   Battleship.cpp
+  Tile.cpp
   main.cpp
   moc_Battleship.cpp
-  Battleship.vcxproj -> C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
+  Battleship.vcxproj -> C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe

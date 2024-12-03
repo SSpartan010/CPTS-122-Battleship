@@ -10,6 +10,9 @@ class Tile : public QPushButton {
 		Tile(QWidget* parent);
 		Ship* getShip();
 		void setShip(Ship* ship);
+		bool shipexist(); //check if there is ship at that place
+
 	private:
 		Ship* ship;
+
 };
