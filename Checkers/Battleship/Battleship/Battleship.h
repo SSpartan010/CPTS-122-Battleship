@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_Battleship.h"
+#include "Ship.h"
+#include <QPushButton>
 
 class Battleship : public QMainWindow
 {
