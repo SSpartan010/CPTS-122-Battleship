@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ship.h" />
+    <ClCompile Include="Tile.cpp" />
     <QtRcc Include="Battleship.qrc" />
     <QtUic Include="Battleship.ui" />
     <QtMoc Include="Battleship.h" />
