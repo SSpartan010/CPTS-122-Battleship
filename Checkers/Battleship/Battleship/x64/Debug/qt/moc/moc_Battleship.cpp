@@ -38,10 +38,10 @@ struct qt_meta_tag_ZN10BattleshipE_t {};
 #ifdef QT_MOC_HAS_STRINGDATA
 static constexpr auto qt_meta_stringdata_ZN10BattleshipE = QtMocHelpers::stringData(
     "Battleship",
-    "showGamepage",
+    "showgamepg",
     "",
-    "showRulespage",
-    "showMainmenu",
+    "showrulespg",
+    "showmainmenu",
     "handleButton"
 );
 #else  // !QT_MOC_HAS_STRINGDATA
@@ -85,11 +85,11 @@ Q_CONSTINIT const QMetaObject Battleship::staticMetaObject = { {
     qt_incomplete_metaTypeArray<qt_meta_tag_ZN10BattleshipE_t,
         // Q_OBJECT / Q_GADGET
         QtPrivate::TypeAndForceComplete<Battleship, std::true_type>,
-        // method 'showGamepage'
+        // method 'showgamepg'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'showRulespage'
+        // method 'showrulespg'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'showMainmenu'
+        // method 'showmainmenu'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'handleButton'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
@@ -102,9 +102,9 @@ void Battleship::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
     auto *_t = static_cast<Battleship *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->showGamepage(); break;
-        case 1: _t->showRulespage(); break;
-        case 2: _t->showMainmenu(); break;
+        case 0: _t->showgamepg(); break;
+        case 1: _t->showrulespg(); break;
+        case 2: _t->showmainmenu(); break;
         case 3: _t->handleButton(); break;
         default: ;
         }

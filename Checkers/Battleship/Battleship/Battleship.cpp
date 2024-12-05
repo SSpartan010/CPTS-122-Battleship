@@ -68,3 +68,21 @@ void Battleship::handleButton() {
 		tile->setText("E");
 	}
 }
+
+// Slot to show Game Page
+void Battleship::showgamepg()
+{
+	stackedWidget->setCurrentWidget(GamePg);
+}
+
+// Slot to show Rules Page
+void Battleship::showrulespg()
+{
+	stackedWidget->setCurrentWidget(RulesPg);
+}
+
+// Slot to show Main Menu
+void Battleship::showmainmenu()
+{
+	stackedWidget->setCurrentWidget(MainMenuPg);
+}

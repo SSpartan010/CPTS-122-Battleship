@@ -24,9 +24,9 @@ private:
 	Ui::BattleshipClass ui;
 	QStackedWidget* stackedWidget; 
 
-	QWidget* MainMenuPg();
-	QWidget* RulesPg();
-	QWidget* GamePg();
+	QWidget* MainMenuPg;
+	QWidget* RulesPg;
+	QWidget* GamePg;
 
 	Tile* playerBoard[10][10];
 	Tile* enemyBoard[10][10];

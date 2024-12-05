@@ -13,6 +13,7 @@ class Tile : public QPushButton {
 		bool shipexist(); //check if there is ship at that place
 		bool isPlayer();
 		void keyPressEvent();
+		void validate();
 	private:
 		Ship* ship;
 		bool isPlayerShip;
