@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ship.cpp" />
     <ClCompile Include="Ship.h" />
     <ClCompile Include="Tile.cpp" />
     <QtRcc Include="Battleship.qrc" />

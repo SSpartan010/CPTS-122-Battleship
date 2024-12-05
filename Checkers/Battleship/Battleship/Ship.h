@@ -4,7 +4,8 @@
 class Ship {
 	public:
 		Ship();
-		Ship(int newLength, int newX, int newY, bool direction);
+		Ship(int newLength, int newX, int newY, bool direction, bool isPlayerShip);
+		int getLength();
 		int getX();
 		int getY();
 		bool getDirection();
@@ -14,5 +15,4 @@ class Ship {
 		int yCoord;
 		bool pointRight; // true if points right, false if points down
 		std::string name;
-
 };

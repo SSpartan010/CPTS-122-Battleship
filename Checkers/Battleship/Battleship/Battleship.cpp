@@ -10,16 +10,19 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	this->setGeometry(0, 0, 1100, 550);
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			Tile* button = new Tile(this);
+			Tile* button = new Tile(this, true);
 			button->setText(".");
 			button->setGeometry(50 * i, 10 + 50 * j, 55, 55);
+			connect(button, &QPushButton::released, this, &Battleship::handleButton);
 			playerBoard[i][j] = button;
-			Tile* button2 = new Tile(this);
+			Tile* button2 = new Tile(this, false);
 			button2->setText("-");
 			button2->setGeometry(550 + 50 * i, 10 + 50 * j, 55, 55);
+			connect(button2, &QPushButton::released, this, &Battleship::handleButton);
 			enemyBoard[i][j] = button2;
 		}
 	}
+	isPlayerTurn = true;
 }
 
 Battleship::~Battleship()       //destructor
@@ -53,4 +56,15 @@ bool Battleship::isGameOver(Tile* board[10][10]) {
     }
     return true;
 
+}
+
+void Battleship::handleButton() {
+	//QObject* obj = QObject::sender();
+	Tile* tile = dynamic_cast<Tile*>(QObject::sender());
+	if (tile->isPlayer()) {
+		tile->setText("P");
+	}
+	else {
+		tile->setText("E");
+	}
 }
