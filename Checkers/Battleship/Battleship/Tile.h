@@ -16,4 +16,5 @@ class Tile : public QPushButton {
 	private:
 		Ship* ship;
 		bool isPlayerShip;
+
 };
