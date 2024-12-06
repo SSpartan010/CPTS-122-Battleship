@@ -1,3 +1,5 @@
+#pragma once
+
 #include "Battleship.h"
 
 Battleship::Battleship(QWidget* parent)     //constructor
@@ -8,12 +10,12 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	this->setGeometry(0, 0, 1100, 650);
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			Tile* button = new Tile(this, true);
-			button->setText(".");
+			Tile* button = new Tile(this, true, i , j);
+			button->setText("-");
 			button->setGeometry(50 * i, 10 + 50 * j, 55, 55);
 			connect(button, &QPushButton::released, this, &Battleship::handleButton);
 			playerBoard[i][j] = button;
-			Tile* button2 = new Tile(this, false);
+			Tile* button2 = new Tile(this, false, i , j);
 			button2->setText("-");
 			button2->setGeometry(550 + 50 * i, 10 + 50 * j, 55, 55);
 			connect(button2, &QPushButton::released, this, &Battleship::handleButton);
@@ -28,6 +30,17 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	text->move(550, 550);
 	text->setFixedWidth(300);
 	text->setFont(QFont("Arial", 20));
+	shipsAdded = 0;
+	playerShips[0] = new Ship(5, 0, 0, true, true, "C");
+	playerShips[1] = new Ship(4, 0, 0, true, true, "B");
+	playerShips[2] = new Ship(3, 0, 0, true, true, "D");
+	playerShips[3] = new Ship(3, 0, 0, true, true, "S");
+	playerShips[4] = new Ship(2, 0, 0, true, true, "P");
+	enemyShips[0] = new Ship(5, 0, 0, true, false, "C");
+	enemyShips[1] = new Ship(4, 0, 0, true, false, "B");
+	enemyShips[2] = new Ship(3, 0, 0, true, false, "D");
+	enemyShips[3] = new Ship(3, 0, 0, true, false, "S");
+	enemyShips[4] = new Ship(2, 0, 0, true, false, "P");
 }
 
 Battleship::~Battleship()       //destructor
@@ -64,39 +77,87 @@ bool Battleship::isGameOver(Tile* board[10][10]) {
 }
 
 void Battleship::handleButton() {
-	//QObject* obj = QObject::sender();
-	Tile* tile = dynamic_cast<Tile*>(QObject::sender());
-	if (tile->isPlayer() && !isPlayerTurn) {
-		for (int i = 0; i < 10;++i) {
-			for (int j = 0; j < 10;++j) {
-				if (enemyBoard[i][j] == tile) {
-					fire(enemyBoard, i, j);
-					break;
+	if (shipsAdded < 5) {
+		if (click1 == nullptr) {
+			click1 = dynamic_cast<Tile*>(QObject::sender());
+		}
+		else {
+			click2 = dynamic_cast<Tile*>(QObject::sender());
+			if (click1->getX() == click2->getX() && click1->getY() > click2->getY()) {
+				if (click1->getY() - playerShips[shipsAdded]->getLength() >= 0) {
+					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+						playerBoard[click1->getX()][click1->getY() - i]->setShip(playerShips[shipsAdded]);
+						playerBoard[click1->getX()][click1->getY() - i]->setText(playerShips[shipsAdded]->getText());
+					}
+				}
+				shipsAdded++;
+			}
+			else if (click1->getX() == click2->getX() && click1->getY() < click2->getY()) {
+				if (click1->getY() + playerShips[shipsAdded]->getLength() < 10) {
+					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+						playerBoard[click1->getX()][click1->getY() + i]->setShip(playerShips[shipsAdded]);
+						playerBoard[click1->getX()][click1->getY() + i]->setText(playerShips[shipsAdded]->getText());
+					}
+				}
+				shipsAdded++;
+			}
+			else if (click1->getY() == click2->getY() && click1->getX() > click2->getX()) {
+				if (click1->getX() - playerShips[shipsAdded]->getLength() >= 0) {
+					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+						playerBoard[click1->getX() - i][click1->getY()]->setShip(playerShips[shipsAdded]);
+						playerBoard[click1->getX() - i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+					}
+				}
+				shipsAdded++;
+			}
+			else if (click1->getY() == click2->getY() && click1->getX() < click2->getX()) {
+				if (click1->getX() + playerShips[shipsAdded]->getLength() < 10) {
+					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+						playerBoard[click1->getX() + i][click1->getY()]->setShip(playerShips[shipsAdded]);
+						playerBoard[click1->getX() + i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+					}
+				}
+				shipsAdded++;
+			}
+			click1 = nullptr;
+			click2 = nullptr;
+		}
+	}
+	else {
+		//QObject* obj = QObject::sender();
+		Tile* tile = dynamic_cast<Tile*>(QObject::sender());
+		if (tile->isPlayer() && !isPlayerTurn) {
+			for (int i = 0; i < 10; ++i) {
+				for (int j = 0; j < 10; ++j) {
+					if (enemyBoard[i][j] == tile) {
+						fire(enemyBoard, i, j);
+						break;
+					}
 				}
 			}
+			if (isGameOver(enemyBoard)) {
+				text->setText("Player Wins!");
+				return;
+			}
+			isPlayerTurn = false;
+			text->setText("Enemy Turn");
 		}
-		if(isGameOver(enemyBoard)){
-			text->setText("Player Wins!");
-			return;
-		}
-		isPlayerTurn = false;
-		text->setText("Enemy Turn");
-	}
-	else if (!tile->isPlayer() && isPlayerTurn) {
-		int x, y; 
-		do {
-			x = rand() % 10;
-			y = rand() % 10;
-		} while (playerBoard[x][y]->text() != ".");
+		else if (!tile->isPlayer() && isPlayerTurn) {
+			int x, y;
+			do {
+				x = rand() % 10;
+				y = rand() % 10;
+			} while (playerBoard[x][y]->text() != ".");
 
-		fire(playerBoard, x, y);
+			fire(playerBoard, x, y);
 
-		if (isGameOver(playerBoard)) {
-			text->setText("You Lose");
-			return;
+			if (isGameOver(playerBoard)) {
+				text->setText("You Lose");
+				return;
+			}
+			isPlayerTurn = true;
+			text->setText("Player Turn");
 		}
-		isPlayerTurn = true;
-		text->setText("Player Turn");
 	}
 }
 
@@ -137,7 +198,7 @@ void Battleship::placeEnemyShips() {
 			bool horizontal = (rand() % 2 == 0);
 			bool isValid = true;
 			if (horizontal) {
-				if (x + ship->getLength() - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+				if (x + ship->getLength() - 1 < 10) { 
 					for (int j = 0; j < ship->getLength(); j++) {
 						if (enemyBoard[x + j][y]->getShip() != nullptr) {
 							isValid = false;
@@ -154,7 +215,7 @@ void Battleship::placeEnemyShips() {
 				}
 			}
 			else {
-				if (y + ship->getLength() - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+				if (y + ship->getLength() - 1 < 10) { 
 					for (int j = 0; j < ship->getLength(); j++) {
 						if (enemyBoard[x][y + j]->getShip() != nullptr) {
 							isValid = false;
@@ -172,6 +233,8 @@ void Battleship::placeEnemyShips() {
 		}
 	}
 }
+
+/*
 void Battleship::placeshipmanually() {
 	Tile* tile = dynamic_cast<Tile*>(QObject::sender());
 	static Ship* currentShip = nullptr; 
@@ -219,10 +282,10 @@ void Battleship::placeshipmanually() {
 				text->setText("Select second tile.");
 				return; 
 			}
-			/*int x1 = 
-			int y1 =			i want it to press button and get the tile 
-			int x2 = 
-			int y2 = */
+			//int x1 = 
+			//int y1 =			i want it to press button and get the tile 
+			//int x2 = 
+			//int y2 =
 
 			bool horizontal = (x1 == x2);
 			bool vertical = (y1 == y2);
@@ -274,3 +337,4 @@ void Battleship::placeshipmanually() {
 		}
 	}
 }
+*/
