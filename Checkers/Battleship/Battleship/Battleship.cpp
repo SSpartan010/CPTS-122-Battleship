@@ -76,7 +76,7 @@ void Battleship::fire(Tile* board[10][10], int x, int y) {
 bool Battleship::isGameOver(Tile* board[10][10]) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (board[i][j]->shipexist() && board[i][j]->text() != "X") {
+			if (board[i][j]->shipexist() && !board[i][j]->beenHit()) {
 				return false;
 			}
 		}
