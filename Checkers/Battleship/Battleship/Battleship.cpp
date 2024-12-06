@@ -259,27 +259,22 @@ void Battleship::placeEnemyShips() {
 		if (i == 0) {
 			ship->setLength(5);
 			ship->setHealth(5);
-			ship->setText("C");
 		}
 		else if (i == 1) {
 			ship->setLength(4);
 			ship->setHealth(4);
-			ship->setText("B");
 		}
 		else if (i == 2) {
 			ship->setLength(3);
 			ship->setHealth(3);
-			ship->setText("D");
 		}
 		else if (i == 3) {
 			ship->setLength(3);
 			ship->setHealth(3);
-			ship->setText("S");
 		}
 		else {
 			ship->setLength(2);
 			ship->setHealth(2);
-			ship->setText("P");
 		}
 		while (true) {
 			int x = rand() % 10;
