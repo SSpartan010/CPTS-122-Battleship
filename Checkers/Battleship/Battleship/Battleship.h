@@ -24,20 +24,16 @@ private slots:
 private:
 	Ui::BattleshipClass ui;
 
-	QWidget* MainMenuPg;
-	QWidget* RulesPg;
-	QWidget* GamePg;
 
 	Tile* playerBoard[10][10];
 	Tile* enemyBoard[10][10];
 	Ship* playerShips[5];
 	Ship* enemyShips[5];
 	bool isPlayerTurn;
-
+	
 
 	void fire(Tile* board[10][10], int x, int y);	//fire opponent ship
 	bool isGameOver(Tile* board[10][10]);	//checks game over
 	void placeEnemyShips();
 	QLineEdit* text;
-
 };

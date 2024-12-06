@@ -67,15 +67,41 @@ void Battleship::handleButton() {
 	//QObject* obj = QObject::sender();
 	Tile* tile = dynamic_cast<Tile*>(QObject::sender());
 	if (tile->isPlayer() && !isPlayerTurn) {
-		tile->setText("P");
-
-	}
-	else if (!tile->isPlayer() && isPlayerTurn) {
-		tile->setText("E");
-		isPlayerTurn = !isPlayerTurn;
+		for (int i = 0; i < 10;++i) {
+			for (int j = 0; j < 10;++j) {
+				if (enemyBoard[i][j] == tile) {
+					fire(enemyBoard, i, j);
+					break;
+				}
+			}
+		}
+		if(isGameOver(enemyBoard)){
+			text->setText("Player Wins!");
+			return;
+		}
+		isPlayerTurn = false;
 		text->setText("Enemy Turn");
 	}
+	else if (!tile->isPlayer() && isPlayerTurn) {
+		int x, y; 
+		do {
+			x = rand() % 10;
+			y = rand() % 10;
+		} while (playerBoard[x][y]->text() != ".");
+
+		fire(playerBoard, x, y);
+
+		if (isGameOver(playerBoard)) {
+			text->setText("You Lose");
+			return;
+		}
+		isPlayerTurn = true;
+		text->setText("Player Turn");
+	}
 }
+
+
+
 
 void Battleship::placeEnemyShips() {
 	for (int i = 0; i < 5; i++) {
@@ -146,3 +172,4 @@ void Battleship::placeEnemyShips() {
 		}
 	}
 }
+
