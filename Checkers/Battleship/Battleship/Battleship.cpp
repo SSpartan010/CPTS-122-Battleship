@@ -25,10 +25,10 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	placeEnemyShips();
 	isPlayerTurn = true;
 	text = new QLineEdit(this);
-	text->setText("Player Turn");
+	text->setText("Choose a player square");
 	text->setReadOnly(true);
 	text->move(550, 550);
-	text->setFixedWidth(300);
+	text->setFixedWidth(500);
 	text->setFont(QFont("Arial", 20));
 	shipsAdded = 0;
 	playerShips[0] = new Ship(5, 0, 0, true, true, "C");
@@ -81,11 +81,12 @@ void Battleship::handleButton() {
 		if (dynamic_cast<Tile*>(QObject::sender())->isPlayer()) {
 			if (click1 == nullptr) {
 				click1 = dynamic_cast<Tile*>(QObject::sender());
+				text->setText("Ship starting at " + QString::number(click1->getX()) + ", " + QString::number(click1->getY()));
 			}
 			else {
 				click2 = dynamic_cast<Tile*>(QObject::sender());
 				if (click1->getX() == click2->getX() && click1->getY() > click2->getY()) {
-					if (click1->getY() - playerShips[shipsAdded]->getLength() >= 0) {
+					if (click1->getY() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 							if (playerBoard[click1->getX()][click1->getY() - i]->getShip() != nullptr) {
@@ -98,11 +99,21 @@ void Battleship::handleButton() {
 								playerBoard[click1->getX()][click1->getY() - i]->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
+							text->setText("Ship placed");
+							if (shipsAdded >= 5) {
+								text->setText("All ships placed, player turn");
+							}
 						}
+						else {
+							text->setText("Invalid placement, try again");
+						}
+					}
+					else {
+						text->setText("Invalid placement, try again");
 					}
 				}
 				else if (click1->getX() == click2->getX() && click1->getY() < click2->getY()) {
-					if (click1->getY() + playerShips[shipsAdded]->getLength() < 10) {
+					if (click1->getY() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 							if (playerBoard[click1->getX()][click1->getY() + i]->getShip() != nullptr) {
@@ -115,11 +126,21 @@ void Battleship::handleButton() {
 								playerBoard[click1->getX()][click1->getY() + i]->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
+							text->setText("Ship placed");
+							if (shipsAdded >= 5) {
+								text->setText("All ships placed, player turn");
+							}
 						}
+						else {
+							text->setText("Invalid placement, try again");
+						}
+					}
+					else {
+						text->setText("Invalid placement, try again");
 					}
 				}
 				else if (click1->getY() == click2->getY() && click1->getX() > click2->getX()) {
-					if (click1->getX() - playerShips[shipsAdded]->getLength() >= 0) {
+					if (click1->getX() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 							if (playerBoard[click1->getX() - i][click1->getY()]->getShip() != nullptr) {
@@ -132,11 +153,21 @@ void Battleship::handleButton() {
 								playerBoard[click1->getX() - i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
+							text->setText("Ship placed");
+							if (shipsAdded >= 5) {
+								text->setText("All ships placed, player turn");
+							}
 						}
+						else {
+							text->setText("Invalid placement, try again");
+						}
+					}
+					else {
+						text->setText("Invalid placement, try again");
 					}
 				}
 				else if (click1->getY() == click2->getY() && click1->getX() < click2->getX()) {
-					if (click1->getX() + playerShips[shipsAdded]->getLength() < 10) {
+					if (click1->getX() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 							if (playerBoard[click1->getX() + i][click1->getY()]->getShip() != nullptr) {
@@ -149,12 +180,28 @@ void Battleship::handleButton() {
 								playerBoard[click1->getX() + i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
+							text->setText("Ship placed");
+							if (shipsAdded >= 5) {
+								text->setText("All ships placed, player turn");
+							}
+						}
+						else {
+							text->setText("Invalid placement, try again");
 						}
 					}
+					else {
+						text->setText("Invalid placement, try again");
+					}
+				}
+				else {
+					text->setText("Invalid placement, try again");
 				}
 				click1 = nullptr;
 				click2 = nullptr;
 			}
+		}
+		else {
+			text->setText("Choose your own tile");
 		}
 		
 	}
