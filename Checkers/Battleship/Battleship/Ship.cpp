@@ -6,14 +6,18 @@ Ship::Ship() {
 	length = 0;
 	xCoord = 0;
 	yCoord = 0;
-	pointRight = false;
+	horizontal = false;
+	health = 0;
+	text = "-";
 }
 
-Ship::Ship(int newLength, int newX, int newY, bool direction, bool isPlayerShip) {
+Ship::Ship(int newLength, int newX, int newY, bool direction, bool isPlayerShip, QString newText) {
 	length = newLength;
 	xCoord = newX;
 	yCoord = newY;
-	pointRight = direction;
+	horizontal = direction;
+	health = newLength;
+	text = newText;
 }
 
 int Ship::getLength() {
@@ -28,6 +32,38 @@ int Ship::getY() {
 	return yCoord;
 }
 
+void Ship::setLength(int newLength) {
+	length = newLength;
+}
+
+void Ship::setX(int newX) {
+	xCoord = newX;
+}
+
+void Ship::setY(int newY) {
+	yCoord = newY;
+}
+
 bool Ship::getDirection() {
-	return pointRight;
+	return horizontal;
+}
+
+void Ship::setDirection(bool newDirection) {
+	horizontal = newDirection;
+}
+
+void Ship::setHealth(int newHealth) {
+	health = newHealth;
+}
+
+int Ship::getHealth() {
+	return health;
+}
+
+QString Ship::getText() {
+	return text;
+}
+
+void Ship::setText(QString newText) {
+	text = newText;
 }
