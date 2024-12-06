@@ -2,6 +2,7 @@
 #include <string>
 #include <QString>
 
+
 enum class ShipType {
 	Carrier,	//5
 	Battleship,	//4
