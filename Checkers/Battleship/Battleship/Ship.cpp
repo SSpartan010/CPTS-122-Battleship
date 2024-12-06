@@ -1,6 +1,5 @@
 #pragma once
 #include "Ship.h"
-#include <QString>
 
 Ship::Ship() {
 	length = 0;

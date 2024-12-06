@@ -2,16 +2,6 @@
 #include <string>
 #include <QString>
 
-
-enum class ShipType {
-	Carrier,	//5
-	Battleship,	//4
-	Destroyer,	//3
-	Submarine,	//3
-	PatrolBoat,	//2
-};
-
-
 class Ship {
 	public:
 		Ship();
@@ -28,6 +18,7 @@ class Ship {
 		void setHealth(int newHealth);
 		QString getText();
 		void setText(QString newText);
+	
 	private:
 		int length;
 		int xCoord;

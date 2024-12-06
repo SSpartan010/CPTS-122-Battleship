@@ -53,13 +53,22 @@ Battleship::~Battleship()       //destructor
 	}
 }
 
-// Fire at tile
-void Battleship::fire(Tile* board[10][10], int x, int y) {
+ //Fire enemy tile
+void Battleship::fireenemy(Tile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
-		board[x][y]->setText("X"); // Hit
+		Ship* hitShip = board[x][y]->getShip(); // Hit
+		board[x][y]->setText(hitShip->getText()); 
 	}
 	else {
-		board[x][y]->setText("O"); // Miss
+		board[x][y]->setText("X"); // Miss
+	}
+}
+void Battleship::fire(Tile* board[10][10], int x, int y) {
+	if (board[x][y]->shipexist()) {
+		board[x][y]->setText("O"); // Hit
+	}
+	else {
+		board[x][y]->setText("X"); // Miss
 	}
 }
 
@@ -216,7 +225,7 @@ void Battleship::handleButton() {
 				text->setText("Already hit. Choose another.");
 				return;
 			}
-			fire(enemyBoard, x, y);
+			fireenemy(enemyBoard, x, y);
 			tile->setHit(true);
 			if (isGameOver(enemyBoard)) {
 				text->setText("Player Wins!");
@@ -259,22 +268,31 @@ void Battleship::placeEnemyShips() {
 		if (i == 0) {
 			ship->setLength(5);
 			ship->setHealth(5);
+			ship->setText("C");
 		}
 		else if (i == 1) {
 			ship->setLength(4);
 			ship->setHealth(4);
+			ship->setText("B");
+
 		}
 		else if (i == 2) {
 			ship->setLength(3);
 			ship->setHealth(3);
+			ship->setText("D");
+
 		}
 		else if (i == 3) {
 			ship->setLength(3);
 			ship->setHealth(3);
+			ship->setText("S");
+
 		}
 		else {
 			ship->setLength(2);
 			ship->setHealth(2);
+			ship->setText("P");
+
 		}
 		while (true) {
 			int x = rand() % 10;
@@ -291,7 +309,7 @@ void Battleship::placeEnemyShips() {
 					if (isValid) {
 						enemyShips[i] = ship;
 						for (int j = 0; j < ship->getLength(); j++) {
-							enemyBoard[x + j][y]->setText(ship->getText());
+							enemyBoard[x + j][y]->setText("-");
 							enemyBoard[x + j][y]->setShip(ship);
 						}
 						break;
@@ -307,7 +325,7 @@ void Battleship::placeEnemyShips() {
 					}
 					if (isValid) {
 						for (int j = 0; j < ship->getLength(); j++) {
-							enemyBoard[x][y + j]->setText(ship->getText());
+							enemyBoard[x][y + j]->setText("-");
 							enemyBoard[x][y + j]->setShip(ship);
 						}
 						break;
