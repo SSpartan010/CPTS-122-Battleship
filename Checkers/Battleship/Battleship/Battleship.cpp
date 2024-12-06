@@ -225,13 +225,14 @@ void Battleship::handleButton() {
 
 			isPlayerTurn = false;
 			text->setText("Enemy Turn");
+			enemyTurn();
 		}
 	}
 
 
 }
 
-void Battleship::enemyturn() {
+void Battleship::enemyTurn() {
 	int x, y;
 	do {
 		x = rand() % 10;
