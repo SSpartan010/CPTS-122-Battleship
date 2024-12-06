@@ -78,50 +78,53 @@ bool Battleship::isGameOver(Tile* board[10][10]) {
 
 void Battleship::handleButton() {
 	if (shipsAdded < 5) {
-		if (click1 == nullptr) {
-			click1 = dynamic_cast<Tile*>(QObject::sender());
+		if (dynamic_cast<Tile*>(QObject::sender())->isPlayer()) {
+			if (click1 == nullptr) {
+				click1 = dynamic_cast<Tile*>(QObject::sender());
+			}
+			else {
+				click2 = dynamic_cast<Tile*>(QObject::sender());
+				if (click1->getX() == click2->getX() && click1->getY() > click2->getY()) {
+					if (click1->getY() - playerShips[shipsAdded]->getLength() >= 0) {
+						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+							playerBoard[click1->getX()][click1->getY() - i]->setShip(playerShips[shipsAdded]);
+							playerBoard[click1->getX()][click1->getY() - i]->setText(playerShips[shipsAdded]->getText());
+						}
+					}
+					shipsAdded++;
+				}
+				else if (click1->getX() == click2->getX() && click1->getY() < click2->getY()) {
+					if (click1->getY() + playerShips[shipsAdded]->getLength() < 10) {
+						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+							playerBoard[click1->getX()][click1->getY() + i]->setShip(playerShips[shipsAdded]);
+							playerBoard[click1->getX()][click1->getY() + i]->setText(playerShips[shipsAdded]->getText());
+						}
+					}
+					shipsAdded++;
+				}
+				else if (click1->getY() == click2->getY() && click1->getX() > click2->getX()) {
+					if (click1->getX() - playerShips[shipsAdded]->getLength() >= 0) {
+						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+							playerBoard[click1->getX() - i][click1->getY()]->setShip(playerShips[shipsAdded]);
+							playerBoard[click1->getX() - i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+						}
+					}
+					shipsAdded++;
+				}
+				else if (click1->getY() == click2->getY() && click1->getX() < click2->getX()) {
+					if (click1->getX() + playerShips[shipsAdded]->getLength() < 10) {
+						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
+							playerBoard[click1->getX() + i][click1->getY()]->setShip(playerShips[shipsAdded]);
+							playerBoard[click1->getX() + i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+						}
+					}
+					shipsAdded++;
+				}
+				click1 = nullptr;
+				click2 = nullptr;
+			}
 		}
-		else {
-			click2 = dynamic_cast<Tile*>(QObject::sender());
-			if (click1->getX() == click2->getX() && click1->getY() > click2->getY()) {
-				if (click1->getY() - playerShips[shipsAdded]->getLength() >= 0) {
-					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-						playerBoard[click1->getX()][click1->getY() - i]->setShip(playerShips[shipsAdded]);
-						playerBoard[click1->getX()][click1->getY() - i]->setText(playerShips[shipsAdded]->getText());
-					}
-				}
-				shipsAdded++;
-			}
-			else if (click1->getX() == click2->getX() && click1->getY() < click2->getY()) {
-				if (click1->getY() + playerShips[shipsAdded]->getLength() < 10) {
-					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-						playerBoard[click1->getX()][click1->getY() + i]->setShip(playerShips[shipsAdded]);
-						playerBoard[click1->getX()][click1->getY() + i]->setText(playerShips[shipsAdded]->getText());
-					}
-				}
-				shipsAdded++;
-			}
-			else if (click1->getY() == click2->getY() && click1->getX() > click2->getX()) {
-				if (click1->getX() - playerShips[shipsAdded]->getLength() >= 0) {
-					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-						playerBoard[click1->getX() - i][click1->getY()]->setShip(playerShips[shipsAdded]);
-						playerBoard[click1->getX() - i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
-					}
-				}
-				shipsAdded++;
-			}
-			else if (click1->getY() == click2->getY() && click1->getX() < click2->getX()) {
-				if (click1->getX() + playerShips[shipsAdded]->getLength() < 10) {
-					for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-						playerBoard[click1->getX() + i][click1->getY()]->setShip(playerShips[shipsAdded]);
-						playerBoard[click1->getX() + i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
-					}
-				}
-				shipsAdded++;
-			}
-			click1 = nullptr;
-			click2 = nullptr;
-		}
+		
 	}
 	else {
 		//QObject* obj = QObject::sender();
