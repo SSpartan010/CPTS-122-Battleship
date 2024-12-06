@@ -6,6 +6,7 @@
 Battleship::Battleship(QWidget* parent)     //constructor
 	: QMainWindow(parent)
 {
+	std::srand(std::time(nullptr));
 	ui.setupUi(this);
 	this->setGeometry(0, 0, 1100, 550);
 	for (int i = 0; i < 10; i++) {
@@ -22,6 +23,7 @@ Battleship::Battleship(QWidget* parent)     //constructor
 			enemyBoard[i][j] = button2;
 		}
 	}
+	placeEnemyShips();
 	isPlayerTurn = true;
 }
 
@@ -69,20 +71,46 @@ void Battleship::handleButton() {
 	}
 }
 
-// Slot to show Game Page
-void Battleship::showgamepg()
-{
-	stackedWidget->setCurrentWidget(GamePg);
-}
-
-// Slot to show Rules Page
-void Battleship::showrulespg()
-{
-	stackedWidget->setCurrentWidget(RulesPg);
-}
-
-// Slot to show Main Menu
-void Battleship::showmainmenu()
-{
-	stackedWidget->setCurrentWidget(MainMenuPg);
+void Battleship::placeEnemyShips() {
+	for (int i = 0; i < 5; i++) {
+		Ship* ship = new Ship();
+		while (true) {
+			int x = rand() % 10;
+			int y = rand() % 10;
+			bool horizontal = (rand() % 2 == 0);
+			bool isValid = true;
+			if (horizontal) {
+				if (x + 3 - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+					for (int j = 0; j < 3; j++) {
+						if (enemyBoard[x + j][y]->getShip() != nullptr) {
+							isValid = false;
+						}
+					}
+					if (isValid) {
+						for (int j = 0; j < 3; j++) {
+							enemyBoard[x + j][y]->setText("S");
+							enemyBoard[x + j][y]->setShip(ship);
+						}
+						break;
+					}
+				}
+			}
+			else {
+				if (y + 3 - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+					for (int j = 0; j < 3; j++) {
+						if (enemyBoard[x][y + j]->getShip() != nullptr) {
+							isValid = false;
+						}
+					}
+					if (isValid) {
+						for (int j = 0; j < 3; j++) {
+							enemyBoard[x][y + j]->setText("S");
+							enemyBoard[x][y + j]->setShip(ship);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
 }
