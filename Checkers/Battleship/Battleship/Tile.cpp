@@ -26,6 +26,3 @@ bool Tile::isPlayer() {
 	return isPlayerShip;
 }
 
-void Tile::keyPressEvent() {
-
-}
