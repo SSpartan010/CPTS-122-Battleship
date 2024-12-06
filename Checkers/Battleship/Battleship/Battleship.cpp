@@ -172,4 +172,105 @@ void Battleship::placeEnemyShips() {
 		}
 	}
 }
+void Battleship::placeshipmanually() {
+	Tile* tile = dynamic_cast<Tile*>(QObject::sender());
+	static Ship* currentShip = nullptr; 
+	static Tile* firstTile = nullptr;
+	int totalship = 0;
+	if (totalship > 4) {
+		text->setText("All ship placed. Game Start!");
+		return;
+	}
+	else {
+		while (totalship <= 4) {
+			Ship* ship = new Ship();
+			if (totalship == 0) {
+				ship->setLength(5);
+				ship->setHealth(5);
+				ship->setText("C");
+			}
+			else if (totalship == 1) {
+				ship->setLength(4);
+				ship->setHealth(4);
+				ship->setText("B");
+			}
+			else if (totalship == 2) {
+				ship->setLength(3);
+				ship->setHealth(3);
+				ship->setText("D");
+			}
+			else if (totalship == 3) {
+				ship->setLength(3);
+				ship->setHealth(3);
+				ship->setText("S");
+			}
+			else {
+				ship->setLength(2);
+				ship->setHealth(2);
+				ship->setText("P");
+			}
+			text->setText(QString("Place ship of length %1: %2")
+				.arg(ship->getLength())
+				.arg(ship->getText()));
 
+		
+			if (firstTile == nullptr) {
+				firstTile = tile;	
+				text->setText("Select second tile.");
+				return; 
+			}
+			/*int x1 = 
+			int y1 =			i want it to press button and get the tile 
+			int x2 = 
+			int y2 = */
+
+			bool horizontal = (x1 == x2);
+			bool vertical = (y1 == y2);
+
+			if (!horizontal && !vertical) {
+				text->setText("Invalid. Try Again");
+			}
+
+			totalship++;
+		}
+
+	}
+		
+			bool horizontal = (rand() % 2 == 0);
+			bool isValid = true;
+			if (horizontal) {
+				if (x + ship->getLength() - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+					for (int j = 0; j < ship->getLength(); j++) {
+						if (enemyBoard[x + j][y]->getShip() != nullptr) {
+							isValid = false;
+						}
+					}
+					if (isValid) {
+						enemyShips[i] = ship;
+						for (int j = 0; j < ship->getLength(); j++) {
+							enemyBoard[x + j][y]->setText(ship->getText());
+							enemyBoard[x + j][y]->setShip(ship);
+						}
+						break;
+					}
+				}
+			}
+			else {
+				if (y + ship->getLength() - 1 < 10) { // REPLACE 3 WITH SHIP LENGTH
+					for (int j = 0; j < ship->getLength(); j++) {
+						if (enemyBoard[x][y + j]->getShip() != nullptr) {
+							isValid = false;
+						}
+					}
+					if (isValid) {
+						for (int j = 0; j < ship->getLength(); j++) {
+							enemyBoard[x][y + j]->setText(ship->getText());
+							enemyBoard[x][y + j]->setShip(ship);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+}

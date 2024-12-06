@@ -35,5 +35,6 @@ private:
 	void fire(Tile* board[10][10], int x, int y);	//fire opponent ship
 	bool isGameOver(Tile* board[10][10]);	//checks game over
 	void placeEnemyShips();
+	void placeshipmanually();
 	QLineEdit* text;
 };

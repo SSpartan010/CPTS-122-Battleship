@@ -4,4 +4,6 @@
   Battleship.cpp
   main.cpp
   moc_Battleship.cpp
+  LINK : C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe not found or not built by the last incremental link; performing full link
+x64\Debug\Ship.obj : warning LNK4042: object specified more than once; extras ignored
   Battleship.vcxproj -> C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
