@@ -1,3 +1,9 @@
-﻿   Qt/MSBuild: 3.3.1.0
+﻿   Qt/MSBuild: 3.3.0.13
    Qt: 6.8.1
-  Battleship.vcxproj -> C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
+  Ship.cpp
+  Ship.h
+  Tile.cpp
+  Battleship.cpp
+  main.cpp
+C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\Battleship\Ship.cpp(1,1): error C1083: Cannot open compiler generated file: 'C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\Battleship\x64\Debug\Ship.obj': Permission denied
+cl : command line  error D8040: error creating or communicating with child process

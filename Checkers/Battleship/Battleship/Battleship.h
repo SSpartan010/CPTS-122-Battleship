@@ -23,10 +23,6 @@ private slots:
 private:
 	Ui::BattleshipClass ui;
 
-	QWidget* MainMenuPg;
-	QWidget* RulesPg;
-	QWidget* GamePg;
-
 	Tile* playerBoard[10][10];
 	Tile* enemyBoard[10][10];
 	bool isPlayerTurn;
