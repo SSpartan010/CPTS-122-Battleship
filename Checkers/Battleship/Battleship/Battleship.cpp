@@ -8,18 +8,14 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	std::srand(std::time(nullptr));
 	ui.setupUi(this);
 	this->setGeometry(0, 0, 1100, 650);
+	enemy = new EnemyBoard(this);
+	player = new PlayerBoard(this);
+	
+
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			PlayerTile* button = new PlayerTile(this, i, j);
-			button->setText("-");
-			button->setGeometry(50 * i, 10 + 50 * j, 55, 55);
-			connect(button, &QPushButton::released, this, &Battleship::handleButton);
-			playerBoard[i][j] = button;
-			EnemyTile* button2 = new EnemyTile(this, i, j);
-			button2->setText("-");
-			button2->setGeometry(550 + 50 * i, 10 + 50 * j, 55, 55);
-			connect(button2, &QPushButton::released, this, &Battleship::handleButton);
-			enemyBoard[i][j] = button2;
+			connect(player->get(i, j), &QPushButton::released, this, &Battleship::handleButton);
+			connect(enemy->get(i, j), &QPushButton::released, this, &Battleship::handleButton);
 		}
 	}
 	placeEnemyShips();
@@ -45,16 +41,13 @@ Battleship::Battleship(QWidget* parent)     //constructor
 
 Battleship::~Battleship()       //destructor
 {
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			delete playerBoard[i][j];
-			delete enemyBoard[i][j];
-		}
-	}
+	delete player;
+	delete enemy;
 }
 
+/*
  //Fire enemy tile
-void Battleship::fire(EnemyTile* board[10][10], int x, int y) {
+void Battleship::fire(EnemyBoard enemy, int x, int y) {
 	if (board[x][y]->shipexist()) {
 		Ship* hitShip = board[x][y]->getShip(); // Hit
 		board[x][y]->setText(hitShip->getText());
@@ -81,6 +74,7 @@ void Battleship::fire(EnemyTile* board[10][10], int x, int y) {
 		board[x][y]->setText("X"); // Miss
 	}
 }
+
 void Battleship::fire(PlayerTile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
 		board[x][y]->setText("O"); // Hit
@@ -108,11 +102,12 @@ void Battleship::fire(PlayerTile* board[10][10], int x, int y) {
 	}
 }
 
-// Check player game over
-bool Battleship::isGameOver(PlayerTile* board[10][10]) {
+
+// Check game over
+bool Battleship::isGameOver(Tile** board[10][10]) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (board[i][j]->shipexist() && !board[i][j]->beenHit()) {
+			if ((*board[i][j])->shipexist() && !(*board[i][j])->beenHit()) {
 				return false;
 			}
 		}
@@ -120,19 +115,7 @@ bool Battleship::isGameOver(PlayerTile* board[10][10]) {
 	return true;
 
 }
-
-// Check enemy game over
-bool Battleship::isGameOver(EnemyTile* board[10][10]) {
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			if (board[i][j]->shipexist() && !board[i][j]->beenHit()) {
-				return false;
-			}
-		}
-	}
-	return true;
-
-}
+*/
 
 void Battleship::handleButton() {
 	if (shipsAdded < 5) {
@@ -147,14 +130,14 @@ void Battleship::handleButton() {
 					if (click1->getY() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-							if (playerBoard[click1->getX()][click1->getY() - i]->getShip() != nullptr) {
+							if (player->get(click1->getX(), click1->getY() - i)->getShip() != nullptr) {
 								validPlace = false;
 							}
 						}
 						if (validPlace) {
 							for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-								playerBoard[click1->getX()][click1->getY() - i]->setShip(playerShips[shipsAdded]);
-								playerBoard[click1->getX()][click1->getY() - i]->setText(playerShips[shipsAdded]->getText());
+								player->get(click1->getX(),click1->getY() - i)->setShip(playerShips[shipsAdded]);
+								player->get(click1->getX(),click1->getY() - i)->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
 							text->setText("Ship placed");
@@ -174,14 +157,14 @@ void Battleship::handleButton() {
 					if (click1->getY() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-							if (playerBoard[click1->getX()][click1->getY() + i]->getShip() != nullptr) {
+							if (player->get(click1->getX(),click1->getY() + i)->getShip() != nullptr) {
 								validPlace = false;
 							}
 						}
 						if (validPlace) {
 							for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-								playerBoard[click1->getX()][click1->getY() + i]->setShip(playerShips[shipsAdded]);
-								playerBoard[click1->getX()][click1->getY() + i]->setText(playerShips[shipsAdded]->getText());
+								player->get(click1->getX(),click1->getY() + i)->setShip(playerShips[shipsAdded]);
+								player->get(click1->getX(),click1->getY() + i)->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
 							text->setText("Ship placed");
@@ -201,14 +184,14 @@ void Battleship::handleButton() {
 					if (click1->getX() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-							if (playerBoard[click1->getX() - i][click1->getY()]->getShip() != nullptr) {
+							if (player->get(click1->getX() - i,click1->getY())->getShip() != nullptr) {
 								validPlace = false;
 							}
 						}
 						if (validPlace) {
 							for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-								playerBoard[click1->getX() - i][click1->getY()]->setShip(playerShips[shipsAdded]);
-								playerBoard[click1->getX() - i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+								player->get(click1->getX() - i,click1->getY())->setShip(playerShips[shipsAdded]);
+								player->get(click1->getX() - i,click1->getY())->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
 							text->setText("Ship placed");
@@ -228,14 +211,14 @@ void Battleship::handleButton() {
 					if (click1->getX() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-							if (playerBoard[click1->getX() + i][click1->getY()]->getShip() != nullptr) {
+							if (player->get(click1->getX() + i,click1->getY())->getShip() != nullptr) {
 								validPlace = false;
 							}
 						}
 						if (validPlace) {
 							for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
-								playerBoard[click1->getX() + i][click1->getY()]->setShip(playerShips[shipsAdded]);
-								playerBoard[click1->getX() + i][click1->getY()]->setText(playerShips[shipsAdded]->getText());
+								player->get(click1->getX() + i,click1->getY())->setShip(playerShips[shipsAdded]);
+								player->get(click1->getX() + i,click1->getY())->setText(playerShips[shipsAdded]->getText());
 							}
 							shipsAdded++;
 							text->setText("Ship placed");
@@ -274,9 +257,25 @@ void Battleship::handleButton() {
 				text->setText("Already hit. Choose another.");
 				return;
 			}
-			fire(enemyBoard, x, y);
+			QString temp = enemy->fire(x, y);
+			if (temp == "C") {
+				text->setText("Enemy Carrier destroyed");
+			}
+			else if (temp == "B") {
+				text->setText("Enemy Battleship destroyed");
+			}
+			else if (temp == "D") {
+				text->setText("Enemy Destroyer destroyed");
+			}
+			else if (temp == "S") {
+				text->setText("Enemy Submarine destroyed");
+			}
+			else if (temp == "P"){
+				text->setText("Enemy Patrol Boat destroyed");
+			}
+			//fire(enemyBoard, x, y);
 			tile->setHit(true);
-			if (isGameOver(enemyBoard)) {
+			if (enemy->isGameOver()) {
 				text->setText("Player Wins!");
 				return;
 			}
@@ -303,23 +302,23 @@ void Battleship::enemyTurn() {
 	bool adjacent = false;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (playerBoard[i][j]->beenHit() && playerBoard[i][j]->getShip() != nullptr && playerBoard[i][j]->getShip()->getHealth() > 0 && !adjacent) {
-				if (i - 1 >= 0 && !playerBoard[i - 1][j]->beenHit()) {
+			if (player->get(i,j)->beenHit() && player->get(i, j)->getShip() != nullptr && player->get(i, j)->getShip()->getHealth() > 0 && !adjacent) {
+				if (i - 1 >= 0 && !player->get(i - 1,j)->beenHit()) {
 					x = i - 1;
 					y = j;
 					adjacent = true;
 				}
-				else if (i + 1 < 10 && !playerBoard[i + 1][j]->beenHit()) {
+				else if (i + 1 < 10 && !player->get(i + 1, j)->beenHit()) {
 					x = i + 1;
 					y = j;
 					adjacent = true;
 				}
-				else if (j - 1 >= 0 && !playerBoard[i][j - 1]->beenHit()) {
+				else if (j - 1 >= 0 && !player->get(i, j - 1)->beenHit()) {
 					x = i;
 					y = j - 1;
 					adjacent = true;
 				}
-				else if (j + 1 < 10 && !playerBoard[i][j + 1]->beenHit()) {
+				else if (j + 1 < 10 && !player->get(i, j + 1)->beenHit()) {
 					x = i;
 					y = j + 1;
 					adjacent = true;
@@ -331,13 +330,30 @@ void Battleship::enemyTurn() {
 		do {
 			x = rand() % 10;
 			y = rand() % 10;
-		} while (playerBoard[x][y]->beenHit());
+		} while (player->get(x, y)->beenHit());
 	}
 	
-	fire(playerBoard, x, y);
-	playerBoard[x][y]->setHit(true);
+	QString temp = player->fire(x, y);
+	if (temp == "C") {
+		text->setText("Player Carrier destroyed");
+	}
+	else if (temp == "B") {
+		text->setText("Player Battleship destroyed");
+	}
+	else if (temp == "D") {
+		text->setText("Player Destroyer destroyed");
+	}
+	else if (temp == "S") {
+		text->setText("Player Submarine destroyed");
+	}
+	else if (temp == "P") {
+		text->setText("Player Patrol Boat destroyed");
+	}
+	//fire(playerBoard, x, y);
+	player->get(x, y)->setHit(true);
+	//playerBoard[x][y]->setHit(true);
 
-	if (isGameOver(playerBoard)) {
+	if (player->isGameOver()) {
 		text->setText("You Lose");
 		return;
 	}
@@ -389,15 +405,15 @@ void Battleship::placeEnemyShips() {
 			if (horizontal) {
 				if (x + ship->getLength() - 1 < 10) {
 					for (int j = 0; j < ship->getLength(); j++) {
-						if (enemyBoard[x + j][y]->getShip() != nullptr) {
+						if (enemy->get(x + j, y)->getShip() != nullptr) {
 							isValid = false;
 						}
 					}
 					if (isValid) {
 						enemyShips[i] = ship;
 						for (int j = 0; j < ship->getLength(); j++) {
-							enemyBoard[x + j][y]->setText("-");
-							enemyBoard[x + j][y]->setShip(ship);
+							enemy->get(x + j, y)->setText("-");
+							enemy->get(x + j, y)->setShip(ship);
 						}
 						break;
 					}
@@ -406,14 +422,14 @@ void Battleship::placeEnemyShips() {
 			else {
 				if (y + ship->getLength() - 1 < 10) {
 					for (int j = 0; j < ship->getLength(); j++) {
-						if (enemyBoard[x][y + j]->getShip() != nullptr) {
+						if (enemy->get(x, y + j)->getShip() != nullptr) {
 							isValid = false;
 						}
 					}
 					if (isValid) {
 						for (int j = 0; j < ship->getLength(); j++) {
-							enemyBoard[x][y + j]->setText("-");
-							enemyBoard[x][y + j]->setShip(ship);
+							enemy->get(x, y + j)->setText("-");
+							enemy->get(x, y + j)->setShip(ship);
 						}
 						break;
 					}

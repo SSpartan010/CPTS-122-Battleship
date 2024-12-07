@@ -10,6 +10,7 @@
 #include <iostream>
 #include <QLineEdit>
 #include <QLabel>
+#include "Board.h"
 
 class Battleship : public QMainWindow
 {
@@ -24,9 +25,8 @@ private slots:
 private:
 	Ui::BattleshipClass ui;
 
-
-	PlayerTile* playerBoard[10][10];
-	EnemyTile* enemyBoard[10][10];
+	PlayerBoard* player;
+	EnemyBoard* enemy;
 	Ship* playerShips[5];
 	Ship* enemyShips[5];
 	Tile* click1;
@@ -34,10 +34,9 @@ private:
 	bool isPlayerTurn;
 	int shipsAdded;
 
-	void fire(PlayerTile* board[10][10], int x, int y);	//fire opponent ship
-	void fire(EnemyTile* board[10][10], int x, int y);	//fire opponent ship
-	bool isGameOver(PlayerTile* board[10][10]);	//checks game over
-	bool isGameOver(EnemyTile* board[10][10]);
+	//void fire(PlayerTile* board[10][10], int x, int y);	//fire opponent ship
+	//void fire(EnemyTile* board[10][10], int x, int y);	//fire opponent ship
+	bool isGameOver(Tile** board[10][10]);	//checks game over
 	void placeEnemyShips();
 	void enemyTurn();
 	QLineEdit* text;
