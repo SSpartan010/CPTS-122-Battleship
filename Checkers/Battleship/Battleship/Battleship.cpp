@@ -378,8 +378,8 @@ void Battleship::enemyTurn() {
 
 
 
-void Battleship::placeEnemyShips() {
-	for (int i = 0; i < 5; i++) {
+void Battleship::placeEnemyShips() {//ranodomly generate enemy ship
+	for (int i = 0; i < 5; i++) {//5ships in total
 		Ship* ship = new Ship();
 		enemyShips[i] = ship;
 		if (i == 0) {
@@ -412,10 +412,12 @@ void Battleship::placeEnemyShips() {
 
 		}
 		while (true) {
+			//generate random number
 			int x = rand() % 10;
 			int y = rand() % 10;
 			bool horizontal = (rand() % 2 == 0);
 			bool isValid = true;
+			//generate random direcntion
 			if (horizontal) {
 				if (x + ship->getLength() - 1 < 10) {
 					for (int j = 0; j < ship->getLength(); j++) {
