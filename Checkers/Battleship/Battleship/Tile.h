@@ -17,10 +17,22 @@ class Tile : public QPushButton { // inheritance, inherits button to send signal
 		int getY();
 		bool beenHit();
 		void setHit(bool hit);
-	private:
+	protected:
 		Ship* ship;
 		bool isPlayerShip;
 		int x;
 		int y;
 		bool isHit;
+};
+
+class PlayerTile : public Tile {
+public:
+	PlayerTile();
+	PlayerTile(QWidget* parent, int x, int y);
+};
+
+class EnemyTile : public Tile {
+public:
+	EnemyTile();
+	EnemyTile(QWidget* parent, int x, int y);
 };

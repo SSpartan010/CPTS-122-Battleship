@@ -48,3 +48,19 @@ bool Tile::beenHit() {
 void Tile::setHit(bool hit) {
 	isHit = hit;
 }
+
+PlayerTile::PlayerTile() : Tile() {
+	isPlayerShip = true;
+}
+
+PlayerTile::PlayerTile(QWidget* parent, int x, int y) : Tile(parent, true, x, y) {
+
+}
+
+EnemyTile::EnemyTile() : Tile() {
+	isPlayerShip = false;
+}
+
+EnemyTile::EnemyTile(QWidget* parent, int x, int y) : Tile(parent, false, x, y) {
+
+}

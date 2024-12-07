@@ -10,12 +10,12 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	this->setGeometry(0, 0, 1100, 650);
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			Tile* button = new Tile(this, true, i, j);
+			PlayerTile* button = new PlayerTile(this, i, j);
 			button->setText("-");
 			button->setGeometry(50 * i, 10 + 50 * j, 55, 55);
 			connect(button, &QPushButton::released, this, &Battleship::handleButton);
 			playerBoard[i][j] = button;
-			Tile* button2 = new Tile(this, false, i, j);
+			EnemyTile* button2 = new EnemyTile(this, i, j);
 			button2->setText("-");
 			button2->setGeometry(550 + 50 * i, 10 + 50 * j, 55, 55);
 			connect(button2, &QPushButton::released, this, &Battleship::handleButton);
@@ -54,7 +54,7 @@ Battleship::~Battleship()       //destructor
 }
 
  //Fire enemy tile
-void Battleship::fireenemy(Tile* board[10][10], int x, int y) {
+void Battleship::fire(EnemyTile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
 		Ship* hitShip = board[x][y]->getShip(); // Hit
 		board[x][y]->setText(hitShip->getText());
@@ -81,7 +81,7 @@ void Battleship::fireenemy(Tile* board[10][10], int x, int y) {
 		board[x][y]->setText("X"); // Miss
 	}
 }
-void Battleship::fire(Tile* board[10][10], int x, int y) {
+void Battleship::fire(PlayerTile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
 		board[x][y]->setText("O"); // Hit
 		board[x][y]->getShip()->setHealth(board[x][y]->getShip()->getHealth() - 1);
@@ -108,8 +108,21 @@ void Battleship::fire(Tile* board[10][10], int x, int y) {
 	}
 }
 
-// Check game over
-bool Battleship::isGameOver(Tile* board[10][10]) {
+// Check player game over
+bool Battleship::isGameOver(PlayerTile* board[10][10]) {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (board[i][j]->shipexist() && !board[i][j]->beenHit()) {
+				return false;
+			}
+		}
+	}
+	return true;
+
+}
+
+// Check enemy game over
+bool Battleship::isGameOver(EnemyTile* board[10][10]) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (board[i][j]->shipexist() && !board[i][j]->beenHit()) {
@@ -261,7 +274,7 @@ void Battleship::handleButton() {
 				text->setText("Already hit. Choose another.");
 				return;
 			}
-			fireenemy(enemyBoard, x, y);
+			fire(enemyBoard, x, y);
 			tile->setHit(true);
 			if (isGameOver(enemyBoard)) {
 				text->setText("Player Wins!");

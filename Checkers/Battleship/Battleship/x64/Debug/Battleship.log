@@ -1,4 +1,23 @@
 ﻿   Qt/MSBuild: 3.3.1.0
    Qt: 6.8.1
+  moc Battleship.h
   Battleship.cpp
-  Battleship.vcxproj -> C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
+  Ship.h
+  Tile.cpp
+  main.cpp
+C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(266,8): error C2664: 'bool Battleship::isGameOver(Tile *[][10])': cannot convert argument 1 from 'EnemyTile *[10][10]' to 'Tile *[][10]'
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(266,19):
+  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(112,18):
+  see declaration of 'Battleship::isGameOver'
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(266,8):
+  while trying to match the argument list '(EnemyTile *[10][10])'
+  
+C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(327,6): error C2664: 'bool Battleship::isGameOver(Tile *[][10])': cannot convert argument 1 from 'PlayerTile *[10][10]' to 'Tile *[][10]'
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(327,17):
+  Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or parenthesized function-style cast
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(112,18):
+  see declaration of 'Battleship::isGameOver'
+  C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\Battleship\Battleship.cpp(327,6):
+  while trying to match the argument list '(PlayerTile *[10][10])'
+  
