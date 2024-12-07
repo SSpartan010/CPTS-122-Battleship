@@ -7,11 +7,12 @@ Battleship::Battleship(QWidget* parent)     //constructor
 {
 	std::srand(std::time(nullptr));
 	ui.setupUi(this);
-	this->setGeometry(0, 0, 1100, 650);
+	this->setGeometry(0, 0, 1100, 650);	//set window size
+	//make board
 	enemy = new EnemyBoard(this);
 	player = new PlayerBoard(this);
 	
-
+	//connect tile and with handle button
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			connect(player->get(i, j), &QPushButton::released, this, &Battleship::handleButton);
@@ -20,18 +21,20 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	}
 	placeEnemyShips();
 	isPlayerTurn = true;
+	//making text section to show instruction and information 
 	text = new QLineEdit(this);
 	text->setText("Choose a player square");
 	text->setReadOnly(true);
 	text->move(550, 550);
 	text->setFixedWidth(500);
 	text->setFont(QFont("Arial", 20));
+	//make player's ship
 	shipsAdded = 0;
-	playerShips[0] = new Ship(5, 0, 0, true, true, "C");
-	playerShips[1] = new Ship(4, 0, 0, true, true, "B");
-	playerShips[2] = new Ship(3, 0, 0, true, true, "D");
-	playerShips[3] = new Ship(3, 0, 0, true, true, "S");
-	playerShips[4] = new Ship(2, 0, 0, true, true, "P");
+	playerShips[0] = new Ship(5, 0, 0, true, true, "C");	//carrier
+	playerShips[1] = new Ship(4, 0, 0, true, true, "B");	//battleship
+	playerShips[2] = new Ship(3, 0, 0, true, true, "D");	//Crusier
+	playerShips[3] = new Ship(3, 0, 0, true, true, "S");	//submarine
+	playerShips[4] = new Ship(2, 0, 0, true, true, "P");	//destroyer
 	//enemyShips[0] = new Ship(5, 0, 0, true, false, "C");
 	//enemyShips[1] = new Ship(4, 0, 0, true, false, "B");
 	//enemyShips[2] = new Ship(3, 0, 0, true, false, "D");
@@ -118,22 +121,26 @@ bool Battleship::isGameOver(Tile** board[10][10]) {
 */
 
 void Battleship::handleButton() {
-	if (shipsAdded < 5) {
-		if (dynamic_cast<Tile*>(QObject::sender())->isPlayer()) {
-			if (click1 == nullptr) {
+	if (shipsAdded < 5) {	//if all ship wasn't placed
+		if (dynamic_cast<Tile*>(QObject::sender())->isPlayer()) {//if tile is clicked
+			if (click1 == nullptr) {	//if first click is null
 				click1 = dynamic_cast<Tile*>(QObject::sender());
 				text->setText("Ship starting at " + QString::number(click1->getX()) + ", " + QString::number(click1->getY()));
 			}
-			else {
+			else {//second click will determine the direction and end
 				click2 = dynamic_cast<Tile*>(QObject::sender());
+				//ship placement vertical 
+				//up
 				if (click1->getX() == click2->getX() && click1->getY() > click2->getY()) {
 					if (click1->getY() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
+						//check fo validspace(No ship in selected area)
 						for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 							if (player->get(click1->getX(), click1->getY() - i)->getShip() != nullptr) {
 								validPlace = false;
 							}
 						}
+						//if so, place	
 						if (validPlace) {
 							for (int i = 0; i < playerShips[shipsAdded]->getLength(); i++) {
 								player->get(click1->getX(),click1->getY() - i)->setShip(playerShips[shipsAdded]);
@@ -153,6 +160,7 @@ void Battleship::handleButton() {
 						text->setText("Invalid placement, try again");
 					}
 				}
+				//down
 				else if (click1->getX() == click2->getX() && click1->getY() < click2->getY()) {
 					if (click1->getY() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
@@ -180,6 +188,8 @@ void Battleship::handleButton() {
 						text->setText("Invalid placement, try again");
 					}
 				}
+				//Ship Placement Horizontal
+				//left
 				else if (click1->getY() == click2->getY() && click1->getX() > click2->getX()) {
 					if (click1->getX() - playerShips[shipsAdded]->getLength() >= -1) {
 						bool validPlace = true;
@@ -207,6 +217,7 @@ void Battleship::handleButton() {
 						text->setText("Invalid placement, try again");
 					}
 				}
+				//right
 				else if (click1->getY() == click2->getY() && click1->getX() < click2->getX()) {
 					if (click1->getX() + playerShips[shipsAdded]->getLength() < 11) {
 						bool validPlace = true;
@@ -237,7 +248,7 @@ void Battleship::handleButton() {
 				else {
 					text->setText("Invalid placement, try again");
 				}
-				click1 = nullptr;
+				click1 = nullptr;//reset click for other ship
 				click2 = nullptr;
 			}
 		}
@@ -246,6 +257,7 @@ void Battleship::handleButton() {
 		}
 
 	}
+	//handle turns
 	else {
 		//QObject* obj = QObject::sender();
 		Tile* tile = dynamic_cast<Tile*>(QObject::sender());
@@ -253,11 +265,11 @@ void Battleship::handleButton() {
 			int x = tile->getX();
 			int y = tile->getY();
 
-			if (tile->beenHit()) {
+			if (tile->beenHit()) {//check if it was hit already
 				text->setText("Already hit. Choose another.");
 				return;
 			}
-			QString temp = enemy->fire(x, y);
+			QString temp = enemy->fire(x, y);//fire enemy
 			if (temp == "C") {
 				text->setText("Enemy Carrier destroyed");
 			}
@@ -274,15 +286,15 @@ void Battleship::handleButton() {
 				text->setText("Enemy Patrol Boat destroyed");
 			}
 			//fire(enemyBoard, x, y);
-			tile->setHit(true);
-			if (enemy->isGameOver()) {
+			tile->setHit(true);//mark tile as hit
+			if (enemy->isGameOver()) {	//check it game is over
 				text->setText("Player Wins!");
 				return;
 			}
 
 			isPlayerTurn = false;
 			//text->setText("Enemy Turn");
-			enemyTurn();
+			enemyTurn();//if not done, enemy turn
 		}
 	}
 
@@ -299,6 +311,7 @@ void Battleship::enemyTurn() {
 	} while (playerBoard[x][y]->beenHit());
 	*/
 	
+	//check adjacent tile for smart ai movement
 	bool adjacent = false;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -326,6 +339,7 @@ void Battleship::enemyTurn() {
 			}
 		}
 	}
+	//if not, random choose
 	if (!adjacent) {
 		do {
 			x = rand() % 10;

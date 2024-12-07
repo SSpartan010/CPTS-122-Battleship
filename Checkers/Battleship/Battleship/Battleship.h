@@ -17,27 +17,28 @@ class Battleship : public QMainWindow
 	Q_OBJECT
 
 public:
-	Battleship(QWidget* parent = nullptr);
-	~Battleship();
+	Battleship(QWidget* parent = nullptr);	//constructor
+	~Battleship();	//destructor
 
 private slots:
-	void handleButton();
+	void handleButton();	//manually place ship on playerboard. After placement is finished, game starts. 
 private:
 	Ui::BattleshipClass ui;
 
-	PlayerBoard* player;
-	EnemyBoard* enemy;
+	PlayerBoard* player;	//playerboard
+	EnemyBoard* enemy;	//enemyboard
 	Ship* playerShips[5];
 	Ship* enemyShips[5];
-	Tile* click1;
-	Tile* click2;
-	bool isPlayerTurn;
+	Tile* click1;	//first click for tile
+	Tile* click2;	
+	bool isPlayerTurn;	//will track who's turn
 	int shipsAdded;
 
 	//void fire(PlayerTile* board[10][10], int x, int y);	//fire opponent ship
 	//void fire(EnemyTile* board[10][10], int x, int y);	//fire opponent ship
 	bool isGameOver(Tile** board[10][10]);	//checks game over
-	void placeEnemyShips();
-	void enemyTurn();
+	void placeEnemyShips();	//randomly generate ship placement for enemy(computer)
+	void enemyTurn();	/*Called in handlebutton to take turns playing with player.
+							make movement(fire and hit/miss) by random.(Strategy used so if hit, try button next to the button that was hit*/
 	QLineEdit* text;
 };
