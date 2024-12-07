@@ -1,4 +1,12 @@
-﻿   Qt/MSBuild: 3.3.1.0
+﻿   Qt/MSBuild: 3.3.0.13
    Qt: 6.8.1
   Board.cpp
-  Battleship.vcxproj -> C:\Users\Alber\Documents\GitHub\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
+  Ship.cpp
+  Ship.h
+  Tile.cpp
+  Battleship.cpp
+  main.cpp
+  qrc_Battleship.cpp
+  moc_Battleship.cpp
+x64\Debug\Ship.obj : warning LNK4042: object specified more than once; extras ignored
+  Battleship.vcxproj -> C:\Users\seo05\OneDrive\Desktop\SY\CPTS_122\PA\CPTS-122-Checkers\Checkers\Battleship\x64\Debug\Battleship.exe
