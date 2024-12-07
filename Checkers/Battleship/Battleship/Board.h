@@ -22,7 +22,7 @@ public:
 	virtual void set(int x, int y, Tile* tile);
 	virtual bool isGameOver();
 private:
-	PlayerTile* array[10][10];
+	PlayerTile* array[10][10]; // 2d array of tiles
 };
 
 class EnemyBoard : public Board {
@@ -33,5 +33,5 @@ public:
 	virtual void set(int x, int y, Tile* tile);
 	virtual bool isGameOver();
 private:
-	EnemyTile* array[10][10];
+	EnemyTile* array[10][10]; // 2d array of tiles
 };

@@ -4,11 +4,11 @@
 #include "Ship.h"
 #include "Board.h"
 #include "iostream"
-//test case 1
 
 class Test {
 private:
 
+	// test case 1
 	bool testValidShipPlacement(PlayerBoard* player) {
 		bool validPlacement = true;
 		for (int i = 0; i < 10; i++) {

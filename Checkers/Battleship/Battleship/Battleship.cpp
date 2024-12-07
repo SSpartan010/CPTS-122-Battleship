@@ -2,6 +2,7 @@
 
 #include "Battleship.h"
 
+// initializes battleship
 Battleship::Battleship(QWidget* parent)     //constructor
 	: QMainWindow(parent)
 {
@@ -35,91 +36,16 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	playerShips[2] = new Ship(3, 0, 0, true, true, "D");	//Crusier
 	playerShips[3] = new Ship(3, 0, 0, true, true, "S");	//submarine
 	playerShips[4] = new Ship(2, 0, 0, true, true, "P");	//destroyer
-	//enemyShips[0] = new Ship(5, 0, 0, true, false, "C");
-	//enemyShips[1] = new Ship(4, 0, 0, true, false, "B");
-	//enemyShips[2] = new Ship(3, 0, 0, true, false, "D");
-	//enemyShips[3] = new Ship(3, 0, 0, true, false, "S");
-	//enemyShips[4] = new Ship(2, 0, 0, true, false, "P");
 }
 
+// destructor
 Battleship::~Battleship()       //destructor
 {
 	delete player;
 	delete enemy;
 }
 
-/*
- //Fire enemy tile
-void Battleship::fire(EnemyBoard enemy, int x, int y) {
-	if (board[x][y]->shipexist()) {
-		Ship* hitShip = board[x][y]->getShip(); // Hit
-		board[x][y]->setText(hitShip->getText());
-		board[x][y]->getShip()->setHealth(board[x][y]->getShip()->getHealth() - 1);
-		if (board[x][y]->getShip()->getHealth() == 0) {
-			if (board[x][y]->getShip()->getText() == "C") {
-				text->setText("Opponent Carrier destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "B") {
-				text->setText("Opponent Battleship destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "D") {
-				text->setText("Opponent Destroyer destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "S") {
-				text->setText("Opponent Submarine destroyed");
-			}
-			else {
-				text->setText("Opponent Patrol Boat destroyed");
-			}
-		}
-	}
-	else {
-		board[x][y]->setText("X"); // Miss
-	}
-}
-
-void Battleship::fire(PlayerTile* board[10][10], int x, int y) {
-	if (board[x][y]->shipexist()) {
-		board[x][y]->setText("O"); // Hit
-		board[x][y]->getShip()->setHealth(board[x][y]->getShip()->getHealth() - 1);
-		if (board[x][y]->getShip()->getHealth() == 0) {
-			if (board[x][y]->getShip()->getText() == "C") {
-				text->setText("Player Carrier destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "B") {
-				text->setText("Player Battleship destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "D") {
-				text->setText("Player Destroyer destroyed");
-			}
-			else if (board[x][y]->getShip()->getText() == "S") {
-				text->setText("Player Submarine destroyed");
-			}
-			else {
-				text->setText("Player Patrol Boat destroyed");
-			}
-		}
-	}
-	else {
-		board[x][y]->setText("X"); // Miss
-	}
-}
-
-
-// Check game over
-bool Battleship::isGameOver(Tile** board[10][10]) {
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			if ((*board[i][j])->shipexist() && !(*board[i][j])->beenHit()) {
-				return false;
-			}
-		}
-	}
-	return true;
-
-}
-*/
-
+// handles button signal
 void Battleship::handleButton() {
 	if (shipsAdded < 5) {	//if all ship wasn't placed
 		if (dynamic_cast<Tile*>(QObject::sender())->isPlayer()) {//if tile is clicked
@@ -301,6 +227,7 @@ void Battleship::handleButton() {
 
 }
 
+// enemy turn
 void Battleship::enemyTurn() {
 	int x = 0;
 	int y = 0;
@@ -377,7 +304,7 @@ void Battleship::enemyTurn() {
 }
 
 
-
+// places enemy ships
 void Battleship::placeEnemyShips() {//ranodomly generate enemy ship
 	for (int i = 0; i < 5; i++) {//5ships in total
 		Ship* ship = new Ship();

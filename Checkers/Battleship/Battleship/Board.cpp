@@ -1,10 +1,12 @@
 #pragma once
 
+// initializes board
 #include "Board.h"
 Board::Board() {
 	parent = nullptr;
 }
 
+// initializes player board
 PlayerBoard::PlayerBoard(QWidget* parent) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -17,6 +19,7 @@ PlayerBoard::PlayerBoard(QWidget* parent) {
 	this->parent = parent;
 }
 
+// enemy fires at the player board
 QString PlayerBoard::fire(int x, int y) {
 	if (array[x][y]->shipexist()) {
 		array[x][y]->setText("O"); // Hit
@@ -31,6 +34,7 @@ QString PlayerBoard::fire(int x, int y) {
 	return "Miss";
 }
 
+// player fires at the enemy board
 QString EnemyBoard::fire(int x, int y) {
 	if (array[x][y]->shipexist()) {
 		Ship* hitShip = array[x][y]->getShip(); // Hit
@@ -46,22 +50,27 @@ QString EnemyBoard::fire(int x, int y) {
 	return "Miss";
 }
 
+// gets tile at the specified location on player board
 Tile* PlayerBoard::get(int x, int y) {
 	return array[x][y];
 }
 
+// gets tile at the specified location on enemy board
 Tile* EnemyBoard::get(int x, int y) {
 	return array[x][y];
 }
 
+// sets tile at specified location to set tile on player board
 void PlayerBoard::set(int x, int y, Tile* tile) {
 	array[x][y] = dynamic_cast<PlayerTile*>(tile);
 }
 
+// sets tile at specified location to set tile on enemy board
 void EnemyBoard::set(int x, int y, Tile* tile) {
 	array[x][y] = dynamic_cast<EnemyTile*>(tile);
 }
 
+// checks if player has lost
 bool PlayerBoard::isGameOver() {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -73,6 +82,7 @@ bool PlayerBoard::isGameOver() {
 	return true;
 }
 
+// checks if enemy has lost
 bool EnemyBoard::isGameOver() {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -84,7 +94,7 @@ bool EnemyBoard::isGameOver() {
 	return true;
 }
 
-
+// initializes enemy board
 EnemyBoard::EnemyBoard(QWidget* parent) {
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
