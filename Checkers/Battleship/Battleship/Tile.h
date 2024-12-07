@@ -4,7 +4,7 @@
 #include <QPushButton>
 #include <QWidget>
 
-class Tile : public QPushButton {
+class Tile : public QPushButton { // inheritance, inherits button to send signal
 	public:
 		Tile();
 		Tile(QWidget* parent, bool isPlayerShip, int x, int y);

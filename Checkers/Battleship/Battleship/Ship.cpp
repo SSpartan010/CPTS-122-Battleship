@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Ship.h"
 
 Ship::Ship() {

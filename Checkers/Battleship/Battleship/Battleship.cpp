@@ -57,7 +57,25 @@ Battleship::~Battleship()       //destructor
 void Battleship::fireenemy(Tile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
 		Ship* hitShip = board[x][y]->getShip(); // Hit
-		board[x][y]->setText(hitShip->getText()); 
+		board[x][y]->setText(hitShip->getText());
+		board[x][y]->getShip()->setHealth(board[x][y]->getShip()->getHealth() - 1);
+		if (board[x][y]->getShip()->getHealth() == 0) {
+			if (board[x][y]->getShip()->getText() == "C") {
+				text->setText("Opponent Carrier destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "B") {
+				text->setText("Opponent Battleship destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "D") {
+				text->setText("Opponent Destroyer destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "S") {
+				text->setText("Opponent Submarine destroyed");
+			}
+			else {
+				text->setText("Opponent Patrol Boat destroyed");
+			}
+		}
 	}
 	else {
 		board[x][y]->setText("X"); // Miss
@@ -66,6 +84,24 @@ void Battleship::fireenemy(Tile* board[10][10], int x, int y) {
 void Battleship::fire(Tile* board[10][10], int x, int y) {
 	if (board[x][y]->shipexist()) {
 		board[x][y]->setText("O"); // Hit
+		board[x][y]->getShip()->setHealth(board[x][y]->getShip()->getHealth() - 1);
+		if (board[x][y]->getShip()->getHealth() == 0) {
+			if (board[x][y]->getShip()->getText() == "C") {
+				text->setText("Player Carrier destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "B") {
+				text->setText("Player Battleship destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "D") {
+				text->setText("Player Destroyer destroyed");
+			}
+			else if (board[x][y]->getShip()->getText() == "S") {
+				text->setText("Player Submarine destroyed");
+			}
+			else {
+				text->setText("Player Patrol Boat destroyed");
+			}
+		}
 	}
 	else {
 		board[x][y]->setText("X"); // Miss
@@ -233,7 +269,7 @@ void Battleship::handleButton() {
 			}
 
 			isPlayerTurn = false;
-			text->setText("Enemy Turn");
+			//text->setText("Enemy Turn");
 			enemyTurn();
 		}
 	}
@@ -256,7 +292,7 @@ void Battleship::enemyTurn() {
 		return;
 	}
 	isPlayerTurn = true;
-	text->setText("Player Turn");
+	//text->setText("Player Turn");
 
 }
 
