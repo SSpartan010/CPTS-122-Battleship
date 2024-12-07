@@ -36,11 +36,11 @@ Battleship::Battleship(QWidget* parent)     //constructor
 	playerShips[2] = new Ship(3, 0, 0, true, true, "D");
 	playerShips[3] = new Ship(3, 0, 0, true, true, "S");
 	playerShips[4] = new Ship(2, 0, 0, true, true, "P");
-	enemyShips[0] = new Ship(5, 0, 0, true, false, "C");
-	enemyShips[1] = new Ship(4, 0, 0, true, false, "B");
-	enemyShips[2] = new Ship(3, 0, 0, true, false, "D");
-	enemyShips[3] = new Ship(3, 0, 0, true, false, "S");
-	enemyShips[4] = new Ship(2, 0, 0, true, false, "P");
+	//enemyShips[0] = new Ship(5, 0, 0, true, false, "C");
+	//enemyShips[1] = new Ship(4, 0, 0, true, false, "B");
+	//enemyShips[2] = new Ship(3, 0, 0, true, false, "D");
+	//enemyShips[3] = new Ship(3, 0, 0, true, false, "S");
+	//enemyShips[4] = new Ship(2, 0, 0, true, false, "P");
 }
 
 Battleship::~Battleship()       //destructor
@@ -278,12 +278,49 @@ void Battleship::handleButton() {
 }
 
 void Battleship::enemyTurn() {
-	int x, y;
+	int x = 0;
+	int y = 0;
+	/*
 	do {
 		x = rand() % 10;
 		y = rand() % 10;
 	} while (playerBoard[x][y]->beenHit());
-
+	*/
+	
+	bool adjacent = false;
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (playerBoard[i][j]->beenHit() && playerBoard[i][j]->getShip() != nullptr && playerBoard[i][j]->getShip()->getHealth() > 0 && !adjacent) {
+				if (i - 1 >= 0 && !playerBoard[i - 1][j]->beenHit()) {
+					x = i - 1;
+					y = j;
+					adjacent = true;
+				}
+				else if (i + 1 < 10 && !playerBoard[i + 1][j]->beenHit()) {
+					x = i + 1;
+					y = j;
+					adjacent = true;
+				}
+				else if (j - 1 >= 0 && !playerBoard[i][j - 1]->beenHit()) {
+					x = i;
+					y = j - 1;
+					adjacent = true;
+				}
+				else if (j + 1 < 10 && !playerBoard[i][j + 1]->beenHit()) {
+					x = i;
+					y = j + 1;
+					adjacent = true;
+				}
+			}
+		}
+	}
+	if (!adjacent) {
+		do {
+			x = rand() % 10;
+			y = rand() % 10;
+		} while (playerBoard[x][y]->beenHit());
+	}
+	
 	fire(playerBoard, x, y);
 	playerBoard[x][y]->setHit(true);
 
@@ -293,7 +330,7 @@ void Battleship::enemyTurn() {
 	}
 	isPlayerTurn = true;
 	//text->setText("Player Turn");
-
+	
 }
 
 
@@ -301,6 +338,7 @@ void Battleship::enemyTurn() {
 void Battleship::placeEnemyShips() {
 	for (int i = 0; i < 5; i++) {
 		Ship* ship = new Ship();
+		enemyShips[i] = ship;
 		if (i == 0) {
 			ship->setLength(5);
 			ship->setHealth(5);
