@@ -9,7 +9,7 @@
 class Test {
 private:
 
-	void testValidShipPlacement(PlayerBoard* player) {
+	bool testValidShipPlacement(PlayerBoard* player) {
 		bool validPlacement = true;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -23,29 +23,29 @@ private:
 			}
 		}
 		if (validPlacement) {
-			std::cout << "Success\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed\n";
+			return false;
 		}
 	}
 
 	//test case 2
 
-	void testFireOnEnemyBoard(EnemyBoard* enemy) {
+	bool testFireOnEnemyBoard(EnemyBoard* enemy) {
 		int x = 0, y = 0;
 		QString result = enemy->fire(x, y);
 		if (enemy->get(x, y)->beenHit() && (result == "X" || result == "O" || !result.isEmpty())) {
-			std::cout << "Success\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed\n";
+			return false;
 		}
 	}
 
 	//test case 3
 
-	void testGameOver(EnemyBoard* enemy) {
+	bool testGameOver(EnemyBoard* enemy) {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (enemy->get(i, j)->getShip() != nullptr) {
@@ -54,42 +54,42 @@ private:
 			}
 		}
 		if (enemy->isGameOver()) {
-			std::cout << "Success\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed\n";
+			return false;
 		}
 	}
 	//test case 4
 
-	void testAITargetSelection(PlayerBoard* player) {
+	bool testAITargetSelection(PlayerBoard* player) {
 		player->get(0, 0)->setHit(true);
 		QString result = player->fire(1, 1);
 		if (!player->get(0, 0)->beenHit() && (result == "X" || result == "O" || !result.isEmpty())) {
-			std::cout << "Success\n";
+			return true;
 		}
 		else {
-			std::cout << "Failed\n";
+			return false;
 		}
 	}
 
 	//test case 5
 
-	void testShipHealthUpdates(PlayerBoard* player) {
+	bool testShipHealthUpdates(PlayerBoard* player) {
 		int x = 0, y = 0;
 		if (player->get(x, y)->getShip() != nullptr) {
 			Ship* ship = player->get(x, y)->getShip();
 			int initialHealth = ship->getHealth();
 			player->fire(x, y);
 			if (ship->getHealth() == initialHealth - 1) {
-				std::cout << "Success\n";
+				return true;
 			}
 			else {
-				std::cout << "Failed\n";
+				return false;
 			}
 		}
 		else {
-			std::cout << "Failed (No ship at target)\n";
+			return false;
 		}
 	}
 public:

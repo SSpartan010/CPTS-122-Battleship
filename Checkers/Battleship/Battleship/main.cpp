@@ -14,9 +14,8 @@ int main(int argc, char *argv[])
     EnemyBoard* enemy = new EnemyBoard(nullptr);
 
     // Run tests before launching the game
-    Test testSuite;
-    std::cout << "Running Tests...\n";
-    testSuite.run(player, enemy);
+    Test test;
+    test.run(player, enemy);
 
     // Launch game
     Battleship w;

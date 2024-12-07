@@ -2,7 +2,7 @@
 
 #include "Tile.h"
 
-Tile::Tile() {
+Tile::Tile() {	//default cosntructor
 	ship = nullptr;
 	x = 0;
 	y = 0;
@@ -10,7 +10,7 @@ Tile::Tile() {
 	isPlayerShip = true;
 }
 
-Tile::Tile(QWidget* parent, bool isPlayerShip, int x, int y) : QPushButton(parent) {
+Tile::Tile(QWidget* parent, bool isPlayerShip, int x, int y) : QPushButton(parent) {	//cosntructor with initialization
 	ship = nullptr;
 	this->isPlayerShip = isPlayerShip;
 	this->x = x;
@@ -18,11 +18,12 @@ Tile::Tile(QWidget* parent, bool isPlayerShip, int x, int y) : QPushButton(paren
 	isHit = false;
 }
 
+//check if ship exist already
 bool Tile::shipexist() {
 	return ship != nullptr;
 }
 
-Ship* Tile::getShip() {
+Ship* Tile::getShip() {	
 	return ship;
 }
 void Tile::setShip(Ship* Ship) {
